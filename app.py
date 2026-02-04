@@ -34,33 +34,34 @@ def extract_data_from_pdf(file_bytes):
 
     # --- REGEX PATTERNS ---
     
-    # 1. PHONE
-    # Captures number after "Phone :" (handles spaces and dashes)
-    phone_match = re.search(r'Phone:\s*([0-9]+)', text)
+    # 1. PHONE (UPDATED)
+    # Now looks for "Phone" + (optional space) + ":" + (optional space) + Number
+    # This covers both "Phone:" and "Phone :"
+    phone_match = re.search(r'Phone\s*:\s*([\d\s\-]+)', text)
     if phone_match:
         data["Phone"] = phone_match.group(1).strip()
 
     # 2. ORDER ID
-    # Captures ID after "Order ID:"
-    order_match = re.search(r'Order ID:\s*([0-9\-]+)', text)
+    # Added \s* before colon just in case: "Order ID :"
+    order_match = re.search(r'Order ID\s*:\s*([0-9\-]+)', text)
     if order_match:
         data["Order ID"] = order_match.group(1).strip()
 
     # 3. SELLER NAME
-    # Captures text for seller name, handling potential line break after the label
-    seller_match = re.search(r'Seller Name:\s*\n?([^\n]+)', text)
+    # Added \s* before colon just in case: "Seller Name :"
+    seller_match = re.search(r'Seller Name\s*:\s*\n?([^\n]+)', text)
     if seller_match:
         data["Seller Name"] = seller_match.group(1).strip()
 
     # 4. SKU
-    # Captures alphanumeric SKU code
-    sku_match = re.search(r'SKU:\s*([A-Za-z0-9\-\.]+)', text)
+    # Added \s* before colon just in case: "SKU :"
+    sku_match = re.search(r'SKU\s*:\s*([A-Za-z0-9\-\.]+)', text)
     if sku_match:
         data["SKU"] = sku_match.group(1).strip()
 
-    # 5. SHIP TO (Multi-line Address Block)
-    # Captures all text between "Ship to:" and the next key field (Phone or Order ID)
-    ship_match = re.search(r'Ship to:\s*(.*?)(?=Phone:|Order ID:)', text, re.DOTALL)
+    # 5. SHIP TO
+    # Added \s* before colons in the start and end anchors
+    ship_match = re.search(r'Ship to\s*:\s*(.*?)(?=Phone\s*:|Order ID\s*:)', text, re.DOTALL)
     if ship_match:
         # Clean address: replace newlines with commas for CSV compatibility
         raw_address = ship_match.group(1).strip()
