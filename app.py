@@ -29,7 +29,7 @@ def extract_data(file_bytes):
     order = re.search(r'(?i)Order\s*ID[:#]?\s*([A-Za-z0-9-]+)', text)
     if order: data["Order ID"] = order.group(1)
 
-    # 2. Phone (Looks for "Phone :" followed by digits)
+    # 2. Phone (Looks for "Phone" followed by digits)
     phone = re.search(r'(?i)(?:Phone|Mobile|Tel)[:.]?\s*([\d\+\-\s]+)', text)
     if phone: data["Phone"] = phone.group(1).strip()
 
