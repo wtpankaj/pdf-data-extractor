@@ -30,15 +30,15 @@ def extract_data(file_bytes):
     if order: data["Order ID"] = order.group(1)
 
     # 2. Phone (Looks for "Phone" followed by digits)
-    phone = re.search(r'(?i)(?:Phone|Mobile|Tel)[:.]?\s*([\d\+\-\s]+)', text)
+    phone = re.search(r'(?i)Phone[:.]?\s*([\d\+\-\s]+)', text)
     if phone: data["Phone"] = phone.group(1).strip()
 
     # 3. SKU (Looks for "SKU" followed by text)
     sku = re.search(r'(?i)SKU[:#]?\s*([A-Za-z0-9\-\.]+)', text)
     if sku: data["SKU"] = sku.group(1)
 
-    # 4. Seller Name (Looks for "Seller Name" or "Sold By")
-    seller = re.search(r'(?i)(?:Seller Name|Sold By)[:]?\s*(.+)', text)
+    # 4. Seller Name (Looks for "Seller Name")
+    seller = re.search(r'(?i)Seller Name[:]?\s*(.+)', text)
     if seller: data["Seller Name"] = seller.group(1).strip()
 
     # 5. Ship To (Grabs text after "Ship To:" until a double newline)
