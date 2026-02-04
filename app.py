@@ -84,7 +84,7 @@ if uploaded_files:
             
         df = pd.DataFrame(all_data)
         
-        cols = ["Ship To", "Order ID", "Phone", "Seller Name", "SKU", "File Name"]
+        cols = ["Ship To", "Order ID", "Phone", "Seller Name", "SKU"]
         df = df.reindex(columns=cols)
         
         st.success("Extraction Complete!")
