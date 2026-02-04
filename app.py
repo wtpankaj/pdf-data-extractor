@@ -35,7 +35,7 @@ def extract_data_from_pdf(file_bytes):
     # --- REGEX PATTERNS ---
     
     # 1. PHONE
-    # Captures number after "Phone:" (handles spaces and dashes)
+    # Captures number after "Phone :" (handles spaces and dashes)
     phone_match = re.search(r'Phone:\s*([0-9]+)', text)
     if phone_match:
         data["Phone"] = phone_match.group(1).strip()
